@@ -1,1 +1,39 @@
+'''
+There are many types of regression models used to test relationships/trends between variables 
+
+Linear Regression: Used to compare variables to test for a trend. Typically using an indepedent and dependent variable. 
+
+'''
+
+#Running linear regression in python 
+
+#import required packages 
+import pandas as pd 
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import linear_model
+
+#Open and read CSV file for Data 
+#Or use other form of Data imported into python
+
+data = pd.read_csv(##CSV FILE NAME HERE)
+data.head() #Test that it is imported and reading correctly
+
+#Pick which variables from the data you wish to compare
+
+data = data[["##IV VARIABLE NAME", "##DV VARIABLE NAME"]]
+
+# Use visualizations to plot the data to look for trends in the variables 
+plt.scatter(data["##IV"] , data["##DV"] , color = "blue") 
+plt.xlabel("##IV") 
+plt.ylabel("##DV")
+plt.show() 
+
+# Using Machine Learning to test and train the regression model for accuracy 
+train =  data[:(int((len(data)*0.8)))]
+test= data[(int((len(data)*0.8))):]
+
+# the 0.8 in the formula means we are using 80% of the data for testing 
+# If the file is large it might be a good idea to use less 
+
 
