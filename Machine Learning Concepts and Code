@@ -1,1 +1,82 @@
+'''
+There are many types of regression models used to test relationships/trends between variables 
 
+Linear Regression: Used to compare variables to test for a trend. Typically using an indepedent and dependent variable. 
+
+'''
+
+#Running linear regression in python 
+
+#import required packages 
+import pandas as pd 
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import linear_model
+
+#Open and read CSV file for Data 
+#Or use other form of Data imported into python
+
+data = pd.read_csv(##CSV FILE NAME HERE)
+data.head() #Test that it is imported and reading correctly
+
+#Pick which variables from the data you wish to compare
+
+data = data[["##IV VARIABLE NAME", "##DV VARIABLE NAME"]]
+
+# Use visualizations to plot the data to look for trends in the variables 
+plt.scatter(data["##IV"] , data["##DV"] , color = "blue") 
+plt.xlabel("##IV") 
+plt.ylabel("##DV")
+plt.show() 
+
+# Using Machine Learning to test and train the regression model for accuracy 
+train =  data[:(int((len(data)*0.8)))]
+test= data[(int((len(data)*0.8))):]
+
+# the 0.8 in the formula means we are using 80% of the data for testing 
+# If the file is large it might be a good idea to use less 
+
+#Using this training Data we can find our coefficient to determine the explanatory value of our regression Model
+
+from sklearn import linear_model
+regr = linear_model.LinearRegression()
+
+train_x = np.array(train[["##IV]]) #IV should go on the x axis
+train_y = np.array(train[["##DV]]) #DV should go on y axis
+
+regr.fit(train_x,train_y)
+
+# We can now print our Coefficient and Intercept :
+print("coefficients : ", regr.coef_)
+print("Intercept : ", regrintercept_)
+
+# We can also plot a line of best fit to show the overarching trend of the relationship between the IV and DV
+
+plt.scatter(train["##IV"], train["##DV"], color= 'blue')
+plt.plot(train_x, regr.coef_*train_x + regr.intercept_, '-r')
+plt.xlabel("##IV")
+plt.ylabel("##DV")
+
+# Now that we have seen the predictive power of our model we will attempt to predict values
+def get_regression_predictions(input_features,intercept,slope):
+  predicted_values = input_featues*slope + intercept
+  
+  return predicted_values
+
+# input a particular value for your IV
+IV = ##DATA SPECIFIC EVENT
+
+estimated_DV = get_regression_predictions(my_engine_size.regr.intercept_[0], regr.coef_[0][0])
+print("Estimated DV :", estimated_DV)
+
+# To conclude we can run a final test of our training data to help us better understanding the accuracy and explanatory value of our model
+
+from sklearn.metrics import r2_score
+
+test_x = np.array(test[["##IV"]])
+test_y = np.arracy(test[["##DV"]])
+test_y_ = regr.predict(test_x)
+
+print("Mean absolute error: %.2f np.mean(np.absolute(test_y_ - test_y)))
+print("Mean sum of squares (MSE): %.2f % np.mean((test_y_ - test_y) **2))
+print("R2-score: %.2f" % r2_score(test_y_ , test_y))
