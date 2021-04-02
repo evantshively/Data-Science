@@ -1,0 +1,54 @@
+from pyspark.sql import SparkSession # This is the entry point for spark to work, with RDD, DataFrame, and Dataset
+# # Spark session provides API for
+# # Spark Context
+# # SQL Context
+# # Streaming Context
+# # Hive Context
+
+# Spark session & context
+spark = SparkSession.builder.master('local').getOrCreate()
+sc = spark.sparkContext
+# # Spark Context is an entry point for your Spark Package and libraries and used programatically to
+# # create Spark RDD, accumulators and broadcast variables on the cluster
+# # YOU CAN CREATE ONLY ONE SPARKCONTEXT PER JVM (JAVA VIRTUAL MACHINE)
+
+data2001 = ['RIN1', 'RIN2', 'RIN3', 'RIN4', 'RIN5', 'RIN6', 'RIN7' ]
+data2002 = ['RIN3', 'RIN4', 'RIN7', 'RIN8', 'RIN9']
+data2003 = ['RIN4', 'RIN8', 'RIN10', 'RIN11', 'RIN12']
+
+# After creating the lists, we have to parallelize our data:
+parData2001 = sc.parallelize(data2001, 2)
+parData2002 = sc.parallelize(data2002, 2)
+parData2003 = sc.parallelize(data2003, 2)
+
+# Finding Projects initiated in three years
+unionOf20012002 = parData2001.union(parData2002)
+unionOf20012002.collect()
+
+# In order to get all the research projects that have been initiated in three years, we can use union
+
+allResearchs = unionOf20012002.union(parData2003)
+
+
+allResearchs.collect()
+
+# Get rid of duplicated
+allUniqueResearchs = allResearchs.distinct()
+allUniqueResearchs.collect()
+
+# Counting Distinct Elements
+allResearchs.distinct().count()
+
+# Telescopic fashion
+parData2001.union(parData2002).union(parData2003).distinct().count()
+
+# Find projecsts that were completed in First year
+firstyearCompletion = parData2001.subtract(parData2002)
+firstyearCompletion.collect()
+
+parData2001.union(parData2002).subtract(parData2003).distinct().collect()
+
+
+# Find projects started in 2001 and continued thru 2003
+
+parData2001.intersection(parData2002).subtract(parData2003).collect()
